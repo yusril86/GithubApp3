@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github App</string>
+    <string name="list_name">Name</string>
+    <string name="list_follower">Followers : </string>
+    <string name="search">search</string>
+    <string name="change_language_setting">Change Language</string>
+    <string name="list_following">Following : </string>
+    <string name="hint_query">Input Name</string>
+    <string name="detail_nama">Name</string>
+    <string name="detail_username">Username</string>
+    <string name="detail_lokasi">Location</string>
+    <string name="detail_perusahaan">Company</string>
+    <string name="detail_repository">Repository</string>
+    <string name="detail_followers">Followers</string>
+    <string name="detail_following">Following</string>
+</resources>
