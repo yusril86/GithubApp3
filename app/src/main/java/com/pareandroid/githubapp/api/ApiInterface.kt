@@ -23,7 +23,7 @@ interface ApiInterface {
     ): Call<User>
 
     @GET("users/{username}/{follow}")
-    @Headers("Authorization: token fa685b4eb7654f16ea5ecd548c5e6514e976eb19")
+    @Headers("Authorization: token 9e317b1288ab4a2339d0c1f3d93aacfc2b50d700")
     fun getDetailFollow(
         @Path("username") username: String,
         @Path("follow") follow: String
