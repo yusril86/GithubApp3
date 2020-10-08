@@ -121,6 +121,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(Settings.ACTION_LOCALE_SETTINGS)
             startActivity(intent)
         }
+        if (item.itemId == R.id.favorite_user){
+            val intentFavorite= Intent(this,FavoriteActivity::class.java)
+            startActivity(intentFavorite)
+        }
+        if (item.itemId == R.id.action_alarm) {
+            val intentAlarm = Intent(this@MainActivity, SettingPreferenceActivity::class.java)
+            startActivity(intentAlarm)
+        }
         return super.onOptionsItemSelected(item)
     }
 

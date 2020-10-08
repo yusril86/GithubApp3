@@ -14,4 +14,16 @@
     <string name="detail_repository">Repository</string>
     <string name="detail_followers">Followers</string>
     <string name="detail_following">Following</string>
+    <string name="favorite_menu">Favorite</string>
+    <string name="no_data_favorite">No data</string>
+    <string name="toast_favorite_add">Add Favorite User</string>
+    <string name="toast_deleted_favorite">Deleted Favorite</string>
+    <string name="alarm_notification">Github User App</string>
+    <string name="text_notification">Find Your Favorite User!</string>
+    <string name="reminder">Alarm Notification 09.00 AM</string>
+    <string name="notification">notification</string>
+    <string name="set_alarm_off">Alarm Off</string>
+    <string name="alarm_set">Set Alarm 09.00 AM</string>
+    <string name="setting_alarm">Setting Alarm</string>
+    <string name="empty_text">No data</string>
 </resources>

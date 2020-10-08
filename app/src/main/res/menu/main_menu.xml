@@ -6,4 +6,14 @@
         android:id="@+id/action_language"
         android:title="@string/change_language_setting"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/favorite_user"
+        android:title="@string/favorite_menu"
+        android:icon="@drawable/ic_favorite_white"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/action_alarm"
+        android:title="@string/setting_alarm"
+        app:showAsAction="never"/>
 </menu>

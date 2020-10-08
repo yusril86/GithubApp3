@@ -55,6 +55,7 @@ class UserAdapter(private var mListData: ArrayList<User>) :
                 DetailActivity::class.java
             )
             intent.putExtra(DetailActivity.EXTRA_USER, dataUser.username)
+            intent.putExtra(DetailActivity.EXTRA_AVATAR_URL, dataUser.avatar)
             holder.itemView.context.startActivity(intent)
         }
 

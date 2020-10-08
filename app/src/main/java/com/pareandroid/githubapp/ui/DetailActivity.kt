@@ -1,26 +1,38 @@
 package com.pareandroid.githubapp.ui
 
+import android.content.ContentValues
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.pareandroid.githubapp.R
 import com.pareandroid.githubapp.adapter.PagerFollowAdapter
 import com.pareandroid.githubapp.api.ApiConfig
 import com.pareandroid.githubapp.api.ApiInterface
+import com.pareandroid.githubapp.db.DatabaseContract
+import com.pareandroid.githubapp.db.UserHelper
 import com.pareandroid.githubapp.model.User
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.sql.SQLException
 
 class DetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_USER = "extra_user"
+        const val EXTRA_AVATAR_URL = "extra_avatar_url"
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -28,15 +40,23 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private lateinit var pagerAdapter: PagerFollowAdapter
+    private lateinit var userHelper: UserHelper
+    private var isFavorite: Boolean = false
+    private lateinit var menuItem: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         actionBar()
-        val username: String = intent.getStringExtra(EXTRA_USER)
+        val username: String? = intent.getStringExtra(EXTRA_USER)
         getDetailUser(username)
         initSectionPager()
         pagerAdapter.username = username
+
+        userHelper = UserHelper.getInstance(applicationContext)
+        userHelper.open()
+
+        favoriteState()
     }
 
     private fun getDetailUser(username: String?) {
@@ -88,5 +108,74 @@ class DetailActivity : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
             title = "Detail User"
         }
+    }
+
+    private fun favoriteState() {
+        val username = intent?.getStringExtra(EXTRA_USER).toString()
+        val result = userHelper.queryByUserLogin(username)
+        val favorite = (1..result.count).map {
+            result.apply {
+                moveToNext()
+                getInt(result.getColumnIndexOrThrow(DatabaseContract.UserColumns.COLUMN_NAME_LOGIN))
+            }
+        }
+        if (favorite.isNotEmpty()) isFavorite = true
+    }
+
+    private fun addFavorite() {
+        try {
+            val username = intent?.getStringExtra(EXTRA_USER).toString()
+            val avatar = intent?.getStringExtra(EXTRA_AVATAR_URL).toString()
+
+            val values = ContentValues().apply {
+                put(DatabaseContract.UserColumns.COLUMN_NAME_LOGIN, username)
+                put(DatabaseContract.UserColumns.COLUMN_NAME_AVATAR_URL, avatar)
+            }
+            userHelper.insert(values)
+            Toast.makeText(this, getString(R.string.toast_favorite_add), Toast.LENGTH_SHORT).show()
+            Log.d("Menambahkan...", values.toString())
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun deleteFavorite() {
+        try {
+            val username = intent?.getStringExtra(EXTRA_USER).toString()
+            val result = userHelper.deleteByUserLogin(username)
+            Toast.makeText(this, getString(R.string.toast_deleted_favorite), Toast.LENGTH_SHORT)
+                .show()
+            Log.d("deleted...", result.toString())
+        } catch (e: SQLException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun setFavorite() {
+        if (isFavorite) {
+            menuItem.getItem(1)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+        } else {
+        menuItem.getItem(1)?.icon = ContextCompat.getDrawable(this,R.drawable.ic_favorite_border)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        menuItem = menu
+        setFavorite()
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.action_language){
+            val intentLanguage = Intent(Settings.ACTION_LOCALE_SETTINGS)
+            startActivity(intentLanguage)
+        }
+        if (item.itemId == R.id.favorite_user) {
+            if (isFavorite) deleteFavorite() else addFavorite()
+            isFavorite = !isFavorite
+            setFavorite()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

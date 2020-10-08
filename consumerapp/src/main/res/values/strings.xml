@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Github App</string>
+    <string name="list_name">Nama</string>
+    <string name="list_follower">Pengikut : </string>
+    <string name="search">search</string>
+    <string name="change_language_setting">Ganti Bahasa</string>
+    <string name="list_following">Mengikuti : </string>
+    <string name="hint_query">Input Nama</string>
+    <string name="detail_nama">Nama</string>
+    <string name="detail_username">Username</string>
+    <string name="detail_lokasi">Lokasi</string>
+    <string name="detail_perusahaan">Perusahaan.Com</string>
+    <string name="detail_repository">Repository</string>
+    <string name="detail_followers">Pengikut</string>
+    <string name="detail_following">Mengikuti</string>
+    <string name="favorite_menu">Favorit</string>
+    <string name="no_data_favorite">Tidak ada data</string>
+    <string name="toast_favorite_add">Menambahkan Favorit Pengguna</string>
+    <string name="toast_deleted_favorite">Mengahapus Favorit</string>
+    <string name="alarm_notification">Github User App</string>
+    <string name="text_notification">Cari Pengguna Github Favorit kamu!</string>
+    <string name="reminder">Alarm Notification 09.00 AM</string>
+    <string name="notification">notifikasi</string>
+    <string name="set_alarm_off">Alarm Mati</string>
+    <string name="alarm_set">Set Alarm 09.00 AM</string>
+    <string name="setting_alarm">Setting Alarm</string>
+</resources>
