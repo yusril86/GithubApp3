@@ -1,5 +1,6 @@
 package com.pareandroid.githubapp.api
 
+import com.pareandroid.githubapp.BuildConfig
 import com.pareandroid.githubapp.model.SearchResponse
 import com.pareandroid.githubapp.model.User
 import retrofit2.Call
@@ -14,7 +15,7 @@ interface ApiInterface {
     fun getApiUsers(): Call<List<User>>
 
     @GET("search/users")
-    @Headers("Authorization: token 9e317b1288ab4a2339d0c1f3d93aacfc2b50d700")
+    @Headers(BuildConfig.API_KEY)
     fun getSearchUser(@Query("q") query: String?): Call<SearchResponse>
 
     @GET("users/{username}")
@@ -23,7 +24,7 @@ interface ApiInterface {
     ): Call<User>
 
     @GET("users/{username}/{follow}")
-    @Headers("Authorization: token 9e317b1288ab4a2339d0c1f3d93aacfc2b50d700")
+    @Headers(BuildConfig.API_KEY)
     fun getDetailFollow(
         @Path("username") username: String,
         @Path("follow") follow: String
