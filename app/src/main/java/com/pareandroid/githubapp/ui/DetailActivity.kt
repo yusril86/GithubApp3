@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.pareandroid.githubapp.R
@@ -56,7 +55,17 @@ class DetailActivity : AppCompatActivity() {
         userHelper = UserHelper.getInstance(applicationContext)
         userHelper.open()
 
-        favoriteState()
+        favoriteStatus()
+        setFavorite()
+
+        btn_favorite.setOnClickListener {
+            if (isFavorite) {
+                deleteFavoriteUser()
+            } else
+                addFavoriteUser()
+            isFavorite = !isFavorite
+            setFavorite()
+        }
     }
 
     private fun getDetailUser(username: String?) {
@@ -110,19 +119,21 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun favoriteState() {
+
+
+    private fun favoriteStatus() {
         val username = intent?.getStringExtra(EXTRA_USER).toString()
         val result = userHelper.queryByUserLogin(username)
         val favorite = (1..result.count).map {
             result.apply {
-                moveToNext()
+                moveToFirst()
                 getInt(result.getColumnIndexOrThrow(DatabaseContract.UserColumns.COLUMN_NAME_LOGIN))
             }
         }
         if (favorite.isNotEmpty()) isFavorite = true
     }
 
-    private fun addFavorite() {
+    private fun addFavoriteUser() {
         try {
             val username = intent?.getStringExtra(EXTRA_USER).toString()
             val avatar = intent?.getStringExtra(EXTRA_AVATAR_URL).toString()
@@ -139,7 +150,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteFavorite() {
+    private fun deleteFavoriteUser() {
         try {
             val username = intent?.getStringExtra(EXTRA_USER).toString()
             val result = userHelper.deleteByUserLogin(username)
@@ -153,16 +164,15 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setFavorite() {
         if (isFavorite) {
-            menuItem.getItem(1)?.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite)
+            btn_favorite.setImageResource(R.drawable.ic_favorite)
         } else {
-        menuItem.getItem(1)?.icon = ContextCompat.getDrawable(this,R.drawable.ic_favorite_border)
+       btn_favorite.setImageResource(R.drawable.ic_favorite_border)
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu,menu)
         menuItem = menu
-        setFavorite()
         return true
     }
 
@@ -172,9 +182,8 @@ class DetailActivity : AppCompatActivity() {
             startActivity(intentLanguage)
         }
         if (item.itemId == R.id.favorite_user) {
-            if (isFavorite) deleteFavorite() else addFavorite()
-            isFavorite = !isFavorite
-            setFavorite()
+            val intentFavorite= Intent(this,FavoriteActivity::class.java)
+            startActivity(intentFavorite)
         }
         return super.onOptionsItemSelected(item)
     }
